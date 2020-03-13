@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Prueba AcTotal</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+
+    <link href="/custom.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div>
+            <img class="mx-auto d-block" src="https://actotal.com/wp-content/uploads/2013/10/ACTotal-logo.png" alt="Logo AcTotal"/>
+        </div>
+
+        <section>
+            <div class="row">
+                <div class="col-sm-4">
+                    <h2 class="text-center">Ingreso de datos</h2>
+                    <div class="mensaje"></div>
+                    <form id="ingresoDatos" action="#">
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" placeholder="Federico Castanares">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control" id="email" placeholder="federico.castanares@gmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="telefono">Telefono</label>
+                            <input type="text" class="form-control" id="telefono" placeholder="095308262">
+                        </div>
+                        <button type="submit" class="btn-primary btn-lg btn-block primario">Guardar</button>
+                    </form>
+                </div>
+                <div class="col-sm-8" id="listado-de-datos">
+                    <h2 class="text-center">Listado de datos</h2>
+                    <div id="listado">
+
+                    </div>
+                    <div id="paginacion">
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="/app.js"></script>
+</body>
+</html>

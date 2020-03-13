@@ -1,0 +1,43 @@
+
+
+body {
+    background-color: #051725;
+    color: #3076a7;
+}
+
+.container {
+    margin-top: 2rem;
+}
+
+section {
+    margin-top: 2rem;
+}
+
+
+.primario {
+    background-color: #3076a7;
+    border-color: #3076a7;
+}
+
+.primario:hover {
+    background-color: #0a2f4c;
+    border-color: #0a2f4c;
+}
+
+span{
+    font-weight: bold;
+}
+
+.usuario{
+    margin: 1rem;
+    background-color: #0a2f4c;
+}
+.col {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-control:focus {
+    color: white;
+}
+

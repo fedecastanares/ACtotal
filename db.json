@@ -1,0 +1,59 @@
+{
+    "usuarios": [
+      {
+        "nombre": "Federico Castanares",
+        "email": "federico.castanares@gmail.com",
+        "telefono": "095308262",
+        "fecha" : "12/03/2020"
+      },
+      {
+        "nombre": "Juan Perez",
+        "email": "juan.jp@gmail.com",
+        "telefono": "095555666",
+        "fecha" : "12/03/2020"
+      },
+      {
+        "nombre": "Carlos Rodriguez",
+        "email": "carlos@gmail.com",
+        "telefono": "095666777",
+        "fecha" : "12/03/2020"
+      },
+      {
+        "nombre": "Federico Castanares",
+        "email": "federico.castanares@gmail.com",
+        "telefono": "095308262",
+        "fecha" : "12/03/2020"
+      },
+      {
+        "nombre": "Juan Perez",
+        "email": "juan.jp@gmail.com",
+        "telefono": "095555666",
+        "fecha" : "12/03/2020"
+      },
+      {
+        "nombre": "Carlos Rodriguez",
+        "email": "carlos@gmail.com",
+        "telefono": "095666777",
+        "fecha" : "12/03/2020"
+      },
+      {
+        "nombre": "Federico Castanares",
+        "email": "federico.castanares@gmail.com",
+        "telefono": "095308262",
+        "fecha" : "12/03/2020"
+      },
+      {
+        "nombre": "Juan Perez",
+        "email": "juan.jp@gmail.com",
+        "telefono": "095555666",
+        "fecha" : "12/03/2020"
+      },
+      {
+        "nombre": "Carlos Rodriguez",
+        "email": "carlos@gmail.com",
+        "telefono": "095666777",
+        "fecha" : "12/03/2020"
+      }
+      
+    ]
+  }
