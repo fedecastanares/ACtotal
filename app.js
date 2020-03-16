@@ -4,8 +4,7 @@ cargarDatos();
 
 function cargarDatos() {
     const xhr = new XMLHttpRequest();
-    // Url de prueba para localhost en puerto 3000
-    xhr.open('GET', 'http://127.0.0.1:3000/usuarios', true );
+    xhr.open('GET', 'http://192.168.1.104:3000/usuarios', true );
     xhr.onload = function(){
         if(this.readyState == 4 && this.status === 200 ) {
             const usuarios = JSON.parse(this.responseText);
@@ -16,20 +15,40 @@ function cargarDatos() {
                 ui.mostrarUsuarios(usuarios);
             }
         } else {
-            console.log('Error al leer la base de datos');  
+            console.log('Para poder testear la app desde mi movil cambie la ruta de ajax por la ip de mi red En mi caso la ip es ');  
+            console.log('192.168.1.104:3000');
+            console.log('Ademas hay que levantar json server en la ip mencionada anteriormente en mi caso el comando:');
+            console.log('json-server --host 192.168.1.104  --watch db.json')
         }
     
     }
     xhr.send();
 }
 
+function agregarDatos(id, nombre, email, telefono) {
+    id = parseInt(id);
+    let fecha = new Date();
+    let anio = fecha.getFullYear();
+    let mes = fecha.getMonth();
+    let dia = fecha.getDate();
+    fecha = dia.toString() + '/' + mes.toString() + '/' + anio.toString();
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST','http://192.168.1.104:3000/usuarios');
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    // guarda el id como String no se porque :(
+    xhr.send(`id=${id}&nombre=${nombre}&email=${email}&telefono=${telefono}&fecha=${fecha}`);
+    // Return respuesta
+    // prevent reload on submit
+}
+ 
+
 
 formulario.addEventListener('submit', e => {
     e.preventDefault();
+    let id = document.getElementById('btnGuardar').value;
     const nombre = document.getElementById('nombre').value;
     const email = document.getElementById('email').value;
     const telefono = document.getElementById('telefono').value;
-
     const ui = new Interfaz();
 
     if(nombre === '' || email === '' || telefono === '' ){
@@ -40,11 +59,14 @@ formulario.addEventListener('submit', e => {
         ui.mostrarMensaje('Debe ingresar un telefono celular correcto','error');
     }
     else {
+        agregarDatos(id,nombre, email, telefono);
+        // si el return es correcto mostrar lo de siguiente
         ui.mostrarMensaje('Datos ingresados correctamente', 'exitoso');
-        // Todavia no funciona agregarDatos(nombre, email, telefono);
-        document.getElementById('listado').remove();
-        cargarDatos();
         formulario.reset();
+        cargarDatos();
+        setTimeout(() => {
+            document.querySelector('.alert').remove();
+           }, 5000);
     }
 })
 
@@ -60,22 +82,29 @@ class Interfaz {
        }
        divMensaje.appendChild(document.createTextNode(mensaje));
        document.getElementsByClassName('mensaje')[0].appendChild(divMensaje);
-       setTimeout(() => {
+       if ( tipo === 'error') {
+        setTimeout(() => {
         document.querySelector('.alert').remove();
-       }, 5000);
+       }, 5000);}
     }
 
-    mostrarUsuarios(usuarios) {
+    mostrarUsuarios(usuarios, pagina) {
         if (document.getElementById('listado') ){
             
         } else {
             const divContenido = document.createElement('div');
             divContenido.setAttribute('id', 'listado'); 
-            document.getElementById('listado-de-datos').appendChild(divContenido);
+            document.getElementById('listado-de-datos').insertBefore(divContenido, document.getElementById('paginacion'));
         }
-        for (let i = 0 ; i < 8; i++) {
+        let itemFinal = pagina * 8;
+        let itemComienzo = itemFinal - 8;
+        let delay = 0.5;
+        let animated = 'slideInUp';
+        usuarios = usuarios.reverse();
+        for (let i = itemComienzo ; i < itemFinal; i++) {
+            if (usuarios[i]){
             const divRow = document.createElement('div');
-            divRow.classList.add('row', 'text-center', 'usuario');
+            divRow.classList.add('row', 'text-center', 'usuario', 'animated', `${animated}`, `delay-${delay}s`);
             const divCol1 = document.createElement('div');
             divCol1.classList.add('col');
             const divCol2 = document.createElement('div');
@@ -86,54 +115,99 @@ class Interfaz {
             divRow.appendChild(divCol2);
             document.getElementById('listado').appendChild(divRow);
         }
+        }
+        const btnGuardar = document.getElementById('btnGuardar');
+        if( btnGuardar.getAttribute('value').length != 1) {
+            btnGuardar.removeAttribute('value');
+        }
+        let id = usuarios[0].id;
+        id = parseInt(id);
+        id = id + 1;
+        btnGuardar.setAttribute('value', id);
+        document.getElementById('btnGuardar').remove();
+        document.getElementById('ingresoDatos').appendChild(btnGuardar);
     }
 
     paginacion(usuarios){
         const ui = new Interfaz();
         let paginas = usuarios.length / 8 ;
         paginas = (Math.trunc(paginas + 1));
-        ui.mostrarUsuarios(usuarios);
-        // usar cantidad de paginas para definir los li
-        document.getElementById('paginacion').innerHTML = `
+        let paginaActual = 1;
+        ui.mostrarUsuarios(usuarios, paginaActual);
+        let html = ''
+        html += `
         <nav aria-label="paginacion">
          <ul class="pagination justify-content-center">
           <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="true" name='paginacion''>Anterior</a>
-          </li>
-          <li class="page-item active"><a class="page-link" href="#" name='paginacion'>1</a></li>
-          <li class="page-item" aria-current="page">
-            <a class="page-link" href="#" name='paginacion' >2</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#" name='paginacion'>3</a></li>
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true" name='paginacion'>Anterior</a>
+          </li>`;
+        for (let i = 1 ; i <= paginas ; i++){
+            if (i === paginaActual) {
+                html += `
+                <li class="page-item active">
+                    <a class="page-link" href="#" name='paginacion'>${i}</a>
+                </li>`
+            } else {
+                html += `
+                <li class="page-item">
+                    <a class="page-link" href="#" name='paginacion'>${i}</a>
+                </li>`}
+        }
+          html += `
           <li class="page-item">
             <a class="page-link" href="#" name='paginacion'>Siguiente</a>
           </li>
         </ul>
-      </nav>`
+      </nav>` ;
+      document.getElementById('paginacion').innerHTML = html;
       document.getElementById('paginacion').addEventListener('click', e => {
         e.preventDefault();
-        ui.cambioPagina(e.target.textContent);
-    } )
+        if (e.target.classList.value === 'page-item disabled'){
+            return;
+        } else {
+        if ( e.target.textContent === 'Siguiente'){
+            paginaActual = parseInt(paginaActual) + 1;
+            paginaActual = paginaActual.toString();
+        } else if (e.target.textContent === 'Anterior') {
+            paginaActual = parseInt(paginaActual) - 1;
+            paginaActual = paginaActual.toString();
+        } else {
+            paginaActual = e.target.textContent;
+        }
+        
+        ui.cambioPagina(usuarios, paginaActual, paginas);
+    }} )
     }
 
-    cambioPagina(pagina) {
-        console.log(pagina);
+    cambioPagina(usuarios, paginaActual, paginas) {
+        
         document.getElementById('listado').remove();
-        const divContenido = document.createElement('div');
-        divContenido.setAttribute('id', 'listado'); 
-        // Insertar antes del nav
-        document.getElementById('listado-de-datos').appendChild(divContenido);
-        document.getElementById('listado').innerHTML = `Desde Paginacion`;
-        // Recorrer pagina seleccionada como el for de mostrarUsuarios pero empezando con otro indice
-        // Cambiar atributos del nav
-    }
-}
+        const ui = new Interfaz(); 
+        ui.mostrarUsuarios(usuarios, paginaActual);
+        ui.paginaActual(paginaActual, paginas);
 
- /*  
-function agregarDatos(nombre, email, telefono) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST','http://127.0.0.1:3000/usuarios', true);
-    xhr.setRequestHeader('Content-type', 'application/json');
-    xhr.send(`nombre=${nombre}&email=${email}&telefono=${telefono}&fecha=12/03/2020`);
+    }
+
+    paginaActual(paginaActual, paginas) {
+        const divPaginacion = document.getElementById('paginacion');
+        document.getElementById('paginacion').remove();
+        let desactivar = paginaActual;
+        desactivar = parseInt(desactivar) + 1;
+        for (let i = 0 ; i < divPaginacion.getElementsByClassName('page-item').length ; i++) {
+            if (paginaActual !== '1' || paginaActual !== desactivar ) {
+                divPaginacion.getElementsByClassName('page-item')[i].classList.remove('disabled');
+            } 
+            divPaginacion.getElementsByClassName('page-item')[i].classList.remove('active');
+            if ( i.toString() === paginaActual ) {
+                divPaginacion.getElementsByClassName('page-item')[i].classList.add('active');
+            }
+        }
+        if (paginaActual === '1') {
+            divPaginacion.getElementsByClassName('page-item')[0].classList.add('disabled')
+        }
+        if (paginaActual === paginas.toString()){
+            divPaginacion.getElementsByClassName('page-item')[desactivar].classList.add('disabled')
+        } 
+        document.getElementById('listado-de-datos').appendChild(divPaginacion);
+        }
 }
- */

@@ -38,6 +38,15 @@ span{
 }
 
 .form-control:focus {
-    color: white;
+    color: black;
 }
 
+#ingresoDatos{
+    margin-top: 2rem;
+}
+
+@media (max-width: 576px) {
+    #listado-de-datos {
+        margin-top: 2rem;
+    }
+}
