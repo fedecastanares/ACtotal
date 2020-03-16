@@ -37,7 +37,7 @@ function agregarDatos(id, nombre, email, telefono) {
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     // guarda el id como String no se porque :(
     xhr.send(`id=${id}&nombre=${nombre}&email=${email}&telefono=${telefono}&fecha=${fecha}`);
-    // Return respuesta
+    // si es exitoso Mostrar  ui.mostrarMensaje como exitoso
     // prevent reload on submit
 }
  
@@ -60,7 +60,7 @@ formulario.addEventListener('submit', e => {
     }
     else {
         agregarDatos(id,nombre, email, telefono);
-        // si el return es correcto mostrar lo de siguiente
+        // cambiar lo siguiente leyendo el POST
         ui.mostrarMensaje('Datos ingresados correctamente', 'exitoso');
         formulario.reset();
         cargarDatos();
