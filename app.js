@@ -39,6 +39,7 @@ function agregarDatos(id, nombre, email, telefono) {
     xhr.send(`id=${id}&nombre=${nombre}&email=${email}&telefono=${telefono}&fecha=${fecha}`);
     // si es exitoso Mostrar  ui.mostrarMensaje como exitoso
     // prevent reload on submit
+    return xhr;
 }
  
 
@@ -59,11 +60,11 @@ formulario.addEventListener('submit', e => {
         ui.mostrarMensaje('Debe ingresar un telefono celular correcto','error');
     }
     else {
-        agregarDatos(id,nombre, email, telefono);
+        let datoAgregado = agregarDatos(id,nombre, email, telefono);
+        console.log(datoAgregado);
         // cambiar lo siguiente leyendo el POST
         ui.mostrarMensaje('Datos ingresados correctamente', 'exitoso');
         formulario.reset();
-        cargarDatos();
         setTimeout(() => {
             document.querySelector('.alert').remove();
            }, 5000);
@@ -101,10 +102,11 @@ class Interfaz {
         let delay = 0.5;
         let animated = 'slideInUp';
         usuarios = usuarios.reverse();
-        for (let i = itemComienzo ; i < itemFinal; i++) {
+         for (let i = itemComienzo ; i < itemFinal; i++) {
             if (usuarios[i]){
             const divRow = document.createElement('div');
             divRow.classList.add('row', 'text-center', 'usuario', 'animated', `${animated}`, `delay-${delay}s`);
+            divRow.setAttribute('value', usuarios[i].id);
             const divCol1 = document.createElement('div');
             divCol1.classList.add('col');
             const divCol2 = document.createElement('div');
@@ -115,7 +117,7 @@ class Interfaz {
             divRow.appendChild(divCol2);
             document.getElementById('listado').appendChild(divRow);
         }
-        }
+        } 
         const btnGuardar = document.getElementById('btnGuardar');
         if( btnGuardar.getAttribute('value').length != 1) {
             btnGuardar.removeAttribute('value');
@@ -175,7 +177,7 @@ class Interfaz {
             paginaActual = e.target.textContent;
         }
         
-        ui.cambioPagina(usuarios, paginaActual, paginas);
+        ui.cambioPagina(usuarios.reverse(), paginaActual, paginas);
     }} )
     }
 
